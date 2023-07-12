@@ -18,43 +18,51 @@ function Test-ComputerOnline {
     return $ping
 }
 
-function _user {
+function _user{
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
         [string]$Computer
     )
-    if (-Not (Test-ComputerOnline -Computer $Computer)) {
-        Write-Host "Device $Computer is not online."
+    	    if (-Not (Test-ComputerOnline -Computer $Computer)) {
+		Write-Host -NoNewline $Computer 
+		Write-Host ":`t N/A "
         return
     }
     query user /server:$Computer
-} 
+    } 
 
-function _build {
+function _build{
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
         [string]$Computer
     )
-    if (-Not (Test-ComputerOnline -Computer $Computer)) {
-        Write-Host "Device $Computer is not online."
+    	    if (-Not (Test-ComputerOnline -Computer $Computer)) {
+		Write-Host -NoNewline $Computer 
+		Write-Host ":`t N/A "
         return
     }
-    (Get-WmiObject -ComputerName $Computer -ClassName Win32_OperatingSystem).BuildNumber
-} 
+   
+Write-Host -NoNewline $Computer 
+Write-Host -NoNewline ":`t Build "
+(Get-WmiObject -ComputerName $Computer -ClassName Win32_OperatingSystem).BuildNumber
+    } 
 
-function _model {
+function _model{
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
         [string]$Computer
     )
-    if (-Not (Test-ComputerOnline -Computer $Computer)) {
-        Write-Host "Device $Computer is not online."
+    	    if (-Not (Test-ComputerOnline -Computer $Computer)) {
+		Write-Host -NoNewline $Computer 
+		Write-Host ":`t N/A "
         return
     }
-    Get-WmiObject -ComputerName $Computer -ClassName Win32_ComputerSystem | Select-Object Model
+	Write-Host -NoNewline $Computer 
+	Write-Host -NoNewline ":`t Model: "
+	(Get-WmiObject -ComputerName $Computer -ClassName Win32_ComputerSystem).Model
 }
 
 function _cpu {
@@ -64,9 +72,12 @@ function _cpu {
         [string]$Computer
     )
     if (-Not (Test-ComputerOnline -Computer $Computer)) {
-        Write-Host "Device $Computer is not online."
+		Write-Host -NoNewline $Computer 
+		Write-Host ":`t N/A "
         return
     }
+    	Write-Host -NoNewline $Computer 
+	Write-Host -NoNewline ":`t CPU: "
     Get-WmiObject -ComputerName $Computer -ClassName Win32_Processor | Select-Object Name
 }
 
