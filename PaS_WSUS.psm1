@@ -4,7 +4,7 @@
     ModuleVersion = '1.0'
     Author = 'Pascal Schoofs'
     Description = 'A module for WSUS actions.'
-    FunctionsToExport = 'Test-ComputerOnline', '_user', '_build', '_model', '_cpu','Get-CitrixVersion','Get-CitrixVersion'
+    FunctionsToExport = 'Test-ComputerOnline', '_gpupdate', 'Force-WSUSCheckin', '_Force-WSUSCheckin', 'Force-WSUSUpdate','Get-UniqueSortedComputerList','WSUSPrep','_WSUSPrep'
     PowerShellVersion = '5.1'
 }
 
