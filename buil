@@ -1,0 +1,67 @@
+function _buildlog{
+	param (
+		[Parameter(Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
+		[string]$Computer
+	)
+	
+	$BuildNumberToWindowsVersion = @{
+		"9200" = "Windows 8 and Windows Server 2012 (OS build 9200)"
+		"9600" = "Windows 8.1 and Windows Server 2012 R2 (OS build 9600)"
+		"10240" = "Windows 10 Version 1507 (RTM) (OS build 10240)"
+		"10586" = "Windows 10 Version 1511 (OS build 10586) - End of servicing"
+		"14393" = "Windows 10 Version 1607 and Windows Server 2016 (OS build 14393) - End of servicing"
+		"15063" = "Windows 10 Version 1703 (OS build 15063) - End of servicing"
+		"16299" = "Windows 10 Version 1709 (OS build 16299) - End of servicing"	
+		"17134" = "Windows 10 Version 1803 (OS build 17134) - End of servicing"
+		"17763" = "Windows 10 Version 1809 and Windows Server 2019 (OS build 17763)"
+		"18362" = "Windows 10 Version 1903 (OS build 18362) - End of servicing"
+		"18363" = "Windows 10 Version 1909 (OS build 18363) - End of servicing"
+		"19041" = "Windows 10 Version 2004 (OS build 19041) - End of servicing"
+		"19042" = "Windows 10 Version 20H2 (OS build 19042) - End of servicing"
+		"19043" = "Windows 10 Version 21H1 (OS build 19043) - End of servicing"
+		"19044" = "Windows 10 Version 21H2 (OS build 19044) - End of servicing"
+		"19045" = "Windows 10 Version 22H2 (OS build 19045)"
+		"22000" = "Windows 11 Version 21H2 (OS build 22000)"
+		"20348" = "Windows Server 2022 (OS build 20348)"
+		"22621" = "Windows 11 Version 22H2 (OS build 22621)"
+	}
+
+	if (-Not (Test-ComputerOnline -Computer $Computer)) {
+		$timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+		$logMessage = "$timestamp $Computer : Offline"
+		#Write-Output $logMessage | Out-File -FilePath $logFilePath -Append
+		Write-Host -NoNewline $Computer 
+		Write-Host ":`t Offline "
+		return
+	}
+	
+	if (-not (Test-WSMan -ComputerName $Computer)) {
+		$timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+		$logMessage = "$timestamp $Computer : WinRM Service not running."
+		#Write-Output $logMessage | Out-File -FilePath $logFilePath -Append
+		Write-Host -NoNewline $Computer
+		Write-Host ":`t WinRM Service not running."
+		return
+	}
+
+
+	
+	if (!(Test-Path -Path "C:\Logs\Hosts\")) {
+	    New-Item -ItemType directory -Path "C:\Logs\Hosts\"
+	}
+
+
+	$logFilePath = "C:\Logs\scriptlog.txt"
+	$logFilePathComputer = "C:\Logs\Hosts\$Computer.txt"
+	$buildNumber = (Get-CimInstance -ComputerName $Computer -ClassName Win32_OperatingSystem).BuildNumber
+	$winVersion = $BuildNumberToWindowsVersion[$buildNumber]
+
+	#Write-Host -NoNewline "$Computer - $winVersion"
+	Write-Host "$Computer - $winVersion"
+	
+	$timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+	$logMessage = "$timestamp $Computer : $winVersion"
+	Write-Output $logMessage | Out-File -FilePath $logFilePath -Append
+	Write-Output $logMessage | Out-File -FilePath $logFilePathComputer -Append
+}
