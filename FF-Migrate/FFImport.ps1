@@ -21,7 +21,7 @@ $latestProfile = Get-ChildItem -Path $firefoxProfilePath -Filter $backupFileName
 
 if ($latestBackup -ne $null) {
     $profileFilePath = $latestProfile.FullName
-    $backupFilePath = $latestProfile.FullName
+    $backupFilePath = $latestBackup.FullName
 
 
     # Extract the contents of the backup zip file
