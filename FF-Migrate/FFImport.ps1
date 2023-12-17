@@ -17,7 +17,8 @@ if ($firefoxProcesses) {
 
 # Find the most recent backup file matching the pattern
 $latestBackup = Get-ChildItem -Path $sourcePath -Filter $backupFileNamePattern | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-$latestProfile = Get-ChildItem -Path $firefoxProfilePath -Filter $backupFileNamePattern | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+#$latestProfile = Get-ChildItem -Path $firefoxProfilePath -Filter $backupFileNamePattern | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+$latestProfile = Get-ChildItem $firefoxProfilesPath | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 
 if ($latestBackup -ne $null) {
     $profileFilePath = $latestProfile.FullName
