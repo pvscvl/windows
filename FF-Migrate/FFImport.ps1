@@ -7,10 +7,10 @@ $firefoxProfilePath = Join-Path $env:APPDATA "Mozilla\Firefox\Profiles"
 $firefoxProcesses = Get-Process -Name firefox -ErrorAction SilentlyContinue
 if ($firefoxProcesses) {
     foreach ($process in $firefoxProcesses) {
-        $process.CloseMainWindow()
-        $process.WaitForExit(10)
+        $process.CloseMainWindow() | Out-Null
+        $process.WaitForExit(10) | Out-Null
         if (!$process.HasExited) {
-            $process | Stop-Process -Force
+            $process | Stop-Process -Force | Out-Null
         }
     }
 }
@@ -30,7 +30,7 @@ if ($latestBackup -ne $null) {
         $backupFilePath = $latestBackup.FullName
 
         # Extract the contents of the backup zip file into the profile folder
-        Expand-Archive -Path $backupFilePath -DestinationPath $profileFolderPath -Force
+        Expand-Archive -Path $backupFilePath -DestinationPath $profileFolderPath -Force | Out-Null
 
         # Optional: Display a message to the user
         Write-Host "Firefox profile imported from backup."
@@ -38,12 +38,12 @@ if ($latestBackup -ne $null) {
         # Check if 64-bit Firefox exists and start it if found
         $firefox64Path = "C:\Program Files\Mozilla Firefox\firefox.exe"
         if (Test-Path $firefox64Path) {
-            Start-Process -FilePath $firefox64Path
+            Start-Process -FilePath $firefox64Path | Out-Null
         } else {
             # If 64-bit version doesn't exist, check for 32-bit version and start it
             $firefox32Path = "C:\Program Files (x86)\Mozilla Firefox\firefox.exe"
             if (Test-Path $firefox32Path) {
-                Start-Process -FilePath $firefox32Path
+                Start-Process -FilePath $firefox32Path | Out-Null
             } else {
                 Write-Host "Firefox not found in the expected locations."
             }
