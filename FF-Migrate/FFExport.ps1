@@ -2,10 +2,10 @@
 $firefoxProcesses = Get-Process -Name firefox -ErrorAction SilentlyContinue
 if ($firefoxProcesses) {
     foreach ($process in $firefoxProcesses) {
-        $process.CloseMainWindow()
-        $process.WaitForExit(10)
+        $process.CloseMainWindow() | Out-Null
+        $process.WaitForExit(10) | Out-Null
         if (!$process.HasExited) {
-            $process | Stop-Process -Force
+            $process | Stop-Process -Force | Out-Null
         }
     }
 }
@@ -16,7 +16,7 @@ $firefoxProfilesPath = Join-Path $userProfilePath "AppData\Roaming\Mozilla\Firef
 $backupPath = "Q:\"
 
 if (-Not (Test-Path -Path $backupPath -PathType Container)) {
-    New-Item -Path $backupPath -ItemType Directory -Force
+    New-Item -Path $backupPath -ItemType Directory -Force | Out-Null
 }
 
 # Find the most recent profile
