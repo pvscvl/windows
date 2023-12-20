@@ -1,4 +1,4 @@
-# Close Firefox gracefully if it's running
+ # Close Firefox gracefully if it's running
 $firefoxProcesses = Get-Process -Name firefox -ErrorAction SilentlyContinue
 if ($firefoxProcesses) {
     foreach ($process in $firefoxProcesses) {
@@ -23,7 +23,7 @@ if (-Not (Test-Path -Path $backupPath -PathType Container)) {
 $latestProfile = Get-ChildItem $firefoxProfilesPath | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 
 if ($latestProfile -ne $null) {
-    $latestProfilePath = $latestProfile.FullName
+    $latestProfilePath = $latestProfile.FullName 
 
     # Change the current directory to the most recent profile folder
     Set-Location -Path $latestProfilePath | Out-Null
@@ -56,3 +56,4 @@ if (Test-Path $firefox64Path) {
 
 # Optional: Display a message to the user
 Write-Host "Firefox profile backup complete. Firefox has been restarted."
+ 
