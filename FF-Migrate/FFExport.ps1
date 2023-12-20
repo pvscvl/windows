@@ -26,14 +26,14 @@ if ($latestProfile -ne $null) {
     $latestProfilePath = $latestProfile.FullName
 
     # Change the current directory to the most recent profile folder
-    Set-Location -Path $latestProfilePath
+    Set-Location -Path $latestProfilePath | Out-Null
 
     # Create a backup file name based on the profile name and current date
     $backupFileName = "FirefoxProfile_$($latestProfile.Name)_$(Get-Date -Format 'yyyyMMdd').zip"
     $backupFilePath = Join-Path $backupPath $backupFileName
 
     # Compress everything within the profile folder, including the folder structure
-    Compress-Archive -Path .\* -DestinationPath $backupFilePath -Force
+    Compress-Archive -Path .\* -DestinationPath $backupFilePath -Force | Out-Null
 } else {
     Write-Host "No Firefox profile found in the specified path."
 }
@@ -43,12 +43,12 @@ if ($latestProfile -ne $null) {
 # Check if 64-bit Firefox exists and start it if found
 $firefox64Path = "C:\Program Files\Mozilla Firefox\firefox.exe"
 if (Test-Path $firefox64Path) {
-    Start-Process -FilePath $firefox64Path
+    Start-Process -FilePath $firefox64Path | Out-Null
 } else {
     # If 64-bit version doesn't exist, check for 32-bit version and start it
     $firefox32Path = "C:\Program Files (x86)\Mozilla Firefox\firefox.exe"
     if (Test-Path $firefox32Path) {
-        Start-Process -FilePath $firefox32Path
+        Start-Process -FilePath $firefox32Path | Out-Null
     } else {
         Write-Host "Firefox not found in the expected locations."
     }
