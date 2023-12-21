@@ -1,4 +1,4 @@
- # Close Firefox gracefully if it's running
+# Close Firefox gracefully if it's running
 $firefoxProcesses = Get-Process -Name firefox -ErrorAction SilentlyContinue
 if ($firefoxProcesses) {
     foreach ($process in $firefoxProcesses) {
@@ -13,6 +13,7 @@ if ($firefoxProcesses) {
 # Define source and destination paths
 $userProfilePath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::UserProfile)
 $firefoxProfilesPath = Join-Path $userProfilePath "AppData\Roaming\Mozilla\Firefox\Profiles"
+$tempFolderPath = "C:\temp"
 $backupPath = "Q:\"
 
 if (-Not (Test-Path -Path $backupPath -PathType Container)) {
@@ -30,10 +31,13 @@ if ($latestProfile -ne $null) {
 
     # Create a backup file name based on the profile name and current date
     $backupFileName = "FirefoxProfile_$($latestProfile.Name)_$(Get-Date -Format 'yyyyMMdd').zip"
-    $backupFilePath = Join-Path $backupPath $backupFileName
+    $backupFilePath = Join-Path $tempFolderPath $backupFileName
 
-    # Compress everything within the profile folder, including the folder structure
-    Compress-Archive -Path .\* -DestinationPath $backupFilePath -Force | Out-Null
+    # Use 7-Zip to compress everything within the profile folder, with "store" compression level
+    & "C:\Program Files\7-Zip\7z.exe" a -tzip -mx0 $backupFilePath .\* | Out-Null
+
+    # Copy the zipfile to the destination folder
+    Copy-Item -Path $backupFilePath -Destination $backupPath -Force
 } else {
     Write-Host "No Firefox profile found in the specified path."
 }
@@ -56,4 +60,3 @@ if (Test-Path $firefox64Path) {
 
 # Optional: Display a message to the user
 Write-Host "Firefox profile backup complete. Firefox has been restarted."
- 
