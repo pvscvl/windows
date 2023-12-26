@@ -38,6 +38,8 @@ if ($latestProfile -ne $null) {
 
     # Copy the zipfile to the destination folder
     Copy-Item -Path $backupFilePath -Destination $backupPath -Force
+    Remove-Item -Path $backupFilePath -Force
+
 } else {
     Write-Host "No Firefox profile found in the specified path."
 }
