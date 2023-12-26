@@ -13,7 +13,8 @@ function Show-ADComputersInGridView {
         }
     }
 
-    $computerInfo | Out-GridView -Title "Active Directory Computers"
+    $computerInfo | Sort-Object -Property "ComputerName" | Out-GridView -Title "Active Directory Computers"
+   # $computerInfo | Out-GridView -Title "Active Directory Computers"
 }
 
 # Call the function to display computer information in a grid view
