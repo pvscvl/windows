@@ -28,6 +28,9 @@ if ($latestBackup -ne $null) {
     if ($latestProfile -ne $null) {
         $profileFolderPath = $latestProfile.FullName
 
+        Get-ChildItem -Path $profileFolderPath | Remove-Item -Force -Recurse
+
+
         Expand-Archive -Path $tempFilePath  -DestinationPath $profileFolderPath -Force | Out-Null
 
         Remove-Item -Path $tempFilePath -Force
