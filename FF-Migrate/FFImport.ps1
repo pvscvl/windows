@@ -1,9 +1,8 @@
 # Define source and destination paths
 $sourcePath = "Q:\"
 $backupFileNamePattern = "FirefoxProfile_*.zip"
-$firefoxProfilePath = Join-Path $env:APPDATA "Mozilla\Firefox\Profiles"
 $destinationPath = "C:\temp"  # Specify the destination folder
-
+$firefoxProfilePath = Join-Path $env:APPDATA "Mozilla\Firefox\Profiles"
 
 # Close Firefox gracefully if it's running
 $firefoxProcesses = Get-Process -Name firefox -ErrorAction SilentlyContinue
@@ -21,22 +20,24 @@ if ($firefoxProcesses) {
 $latestBackup = Get-ChildItem -Path $sourcePath -Filter $backupFileNamePattern | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 
 if ($latestBackup -ne $null) {
- # Copy the backup file to the destination folder
+    # Copy the backup file to the destination folder
     $destinationFilePath = Join-Path $destinationPath $latestBackup.Name
     Copy-Item -Path $latestBackup.FullName -Destination $destinationFilePath -Force
+
+    # Get the list of profiles in the Firefox directory
+    $firefoxProfiles = Get-ChildItem -Path $firefoxProfilePath -Directory
 
     # Find the most recent profile based on LastWriteTime
     $latestProfile = $firefoxProfiles | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 
     if ($latestProfile -ne $null) {
         $profileFolderPath = $latestProfile.FullName
-        $backupFilePath = $latestBackup.FullName
 
-        # Extract the contents of the backup zip file into the profile folder
+        # Extract the contents of the backup zip file from the destination folder
         Expand-Archive -Path $destinationFilePath -DestinationPath $profileFolderPath -Force | Out-Null
-        # Expand-Archive -Path $backupFilePath -DestinationPath $profileFolderPath -Force | Out-Null
 
-          Remove-Item -Path $destinationFilePath -Force
+        # Remove the .zip file from C:\temp
+        Remove-Item -Path $destinationFilePath -Force
 
         # Optional: Display a message to the user
         Write-Host "Firefox profile imported from backup."
