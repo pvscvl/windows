@@ -36,6 +36,8 @@ if ($latestBackup -ne $null) {
         Expand-Archive -Path $destinationFilePath -DestinationPath $profileFolderPath -Force | Out-Null
         # Expand-Archive -Path $backupFilePath -DestinationPath $profileFolderPath -Force | Out-Null
 
+          Remove-Item -Path $destinationFilePath -Force
+
         # Optional: Display a message to the user
         Write-Host "Firefox profile imported from backup."
 
