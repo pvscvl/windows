@@ -33,6 +33,7 @@ if ($latestProfile -ne $null) {
     Copy-Item -Path $backupFilePath -Destination $backupPath -Force
     Remove-Item -Path $backupFilePath -Force
 
+    Set-Location -Path $userProfilePath | Out-Null
 } else {
     Write-Host "No Firefox profile found in the specified path."
 }
