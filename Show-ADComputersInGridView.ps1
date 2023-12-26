@@ -1,0 +1,20 @@
+function Show-ADComputersInGridView {
+    $computers = Get-ADComputer -Filter *
+    
+    $computerInfo = @()
+
+    foreach ($computer in $computers) {
+        $computerName = $computer.Name
+        $description = $computer.Description
+
+        $computerInfo += [PSCustomObject]@{
+            "ComputerName" = $computerName
+            "Description" = $description
+        }
+    }
+
+    $computerInfo | Out-GridView -Title "Active Directory Computers"
+}
+
+# Call the function to display computer information in a grid view
+Show-ADComputersInGridView
