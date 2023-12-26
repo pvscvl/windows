@@ -18,6 +18,10 @@ if (-Not (Test-Path -Path $backupPath -PathType Container)) {
     New-Item -Path $backupPath -ItemType Directory -Force | Out-Null
 }
 
+if (-Not (Test-Path -Path $tempFolderPath -PathType Container)) {
+    New-Item -Path $tempFolderPath -ItemType Directory -Force | Out-Null
+}
+
 $latestProfile = Get-ChildItem $firefoxProfilesPath | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 
 if ($latestProfile -ne $null) {
