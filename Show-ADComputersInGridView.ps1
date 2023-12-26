@@ -1,5 +1,5 @@
 function Show-ADComputersInGridView {
-    $computers = Get-ADComputer -Filter *
+    $computers = Get-ADComputer -Filter * -Properties Name, Description
     
     $computerInfo = @()
 
