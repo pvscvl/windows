@@ -100,6 +100,6 @@ elseif (Test-Path $FIREFOX32EXE) {
 	} else {
 		Write-Host "Firefox not found in the expected locations."
     	}
-}
+
 
 Write-Host "Firefox profile backup complete. Firefox has been restarted." 
