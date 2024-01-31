@@ -1,7 +1,8 @@
 param (
 	[switch]$VERBOSE
 )
-
+	$CURRENTDIRECTORY = Get-Location
+ 
 	Write-Host "Closing Firefox processes ..."
 $FIREFOX_PROCESSES = Get-Process -Name firefox -ErrorAction SilentlyContinue
 	If ($VERBOSE) { Write-Host "Retrieved Firefox processes." }
@@ -75,8 +76,9 @@ if ($LATEST_PROFILE -ne $null) {
 	Copy-Item -Path $BACKUP_FILE_PATH -Destination $BACKUP_PATH -Force
 	Remove-Item -Path $BACKUP_FILE_PATH -Force
    
-	Set-Location -Path $USER_PROFILE_PATH | Out-Null
-		If ($VERBOSE) { Write-Host "Changed location back to user profile path." }
+	# Set-Location -Path $USER_PROFILE_PATH | Out-Null
+ 	Set-Location -Path $CURRENTDIRECTORY | Out-Null
+		If ($VERBOSE) { Write-Host "Changed location back to $CURRENTDIRECTORY " }
 } else {
 	Write-Host "No Firefox profile found in the specified path."
 }
