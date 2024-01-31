@@ -20,7 +20,8 @@ param (
 	if ($FIREFOX_PROCESSES) {
 		foreach ($PROCESS in $FIREFOX_PROCESSES) {
         		$PROCESS.CloseMainWindow() | Out-Null
-        			If ($VERBOSE) { Write-Host "Requested to close Firefox main window for process ID $($PROCESS.Id)." }
+	          		If ($VERBOSE) { Write-Host "" }
+        			If ($VERBOSE) { Write-Host "Requested to close Firefox process ID $($PROCESS.Id)." }
 			$PROCESS.WaitForExit(10) | Out-Null
 				If ($VERBOSE) { Write-Host "Waited for process ID $($PROCESS.Id) to exit." }
    
