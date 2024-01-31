@@ -94,7 +94,7 @@ if (Test-Path $FIREFOX64EXE) {
 	Start-Process -FilePath $FIREFOX64EXE | Out-Null
 		If ($VERBOSE) { Write-Host "Started 64-bit Firefox." }
 } 
-elseif { (Test-Path $FIREFOX32EXE) {
+elseif (Test-Path $FIREFOX32EXE) {
         Start-Process -FilePath $FIREFOX32EXE | Out-Null
 		If ($VERBOSE) { Write-Host "Started 32-bit Firefox." }
 	} else {
