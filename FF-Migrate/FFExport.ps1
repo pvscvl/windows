@@ -29,6 +29,8 @@ $FIREFOX_PROFILES_PATH = Join-Path $USER_PROFILE_PATH "AppData\Roaming\Mozilla\F
 
 $TEMP_FOLDER_PATH = "C:\temp"
 $BACKUP_PATH = "Q:\"
+$7ZIP64EXE = "C:\Program Files\7-Zip\7z.exe"
+$7ZIP32EXE = "C:\Program Files (x86)\7-Zip\7z.exe"
 
 if (-Not (Test-Path -Path $BACKUP_PATH -PathType Container)) {
 	New-Item -Path $BACKUP_PATH -ItemType Directory -Force | Out-Null
@@ -55,7 +57,20 @@ if ($LATEST_PROFILE -ne $null) {
 		If ($VERBOSE) { Write-Host "Backup file name and path set." }
 		If ($VERBOSE) { Write-Host "BACKUP_FILE_NAME: $BACKUP_FILE_NAME" }
 		If ($VERBOSE) { Write-Host "BACKUP_FILE_PATH: $BACKUP_FILE_PATH" }
-	& "C:\Program Files\7-Zip\7z.exe" a -tzip -mx0 $BACKUP_FILE_PATH .\* | Out-Null
+
+		if (Test-Path $7ZIP64EXE) {
+  			If ($VERBOSE) { Write-Host "Using 7Zip (64Bit) to compress profile." }
+    			& $7ZIP64EXE a -tzip -mx0 $BACKUP_FILE_PATH .\* | Out-Null 
+		}
+		elseif (Test-Path $7ZIP32EXE) {
+  			If ($VERBOSE) { Write-Host "Using 7Zip (32Bit) to compress profile." }
+    			& $7ZIP32EXE a -tzip -mx0 $BACKUP_FILE_PATH .\* | Out-Null
+		} 
+		else {
+  			If ($VERBOSE) { Write-Host "Using native windows Compress-Archive function to compress profile." }
+    			Compress-Archive -Path .\* -DestinationPath $BACKUP_FILE_PATH -CompressionLevel NoCompression
+		}
+  
 		If ($VERBOSE) { Write-Host "Created zip archive of the profile." }
 	Copy-Item -Path $BACKUP_FILE_PATH -Destination $BACKUP_PATH -Force
 	Remove-Item -Path $BACKUP_FILE_PATH -Force
