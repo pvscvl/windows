@@ -1,4 +1,9 @@
 $NPPINSTALLED = Test-Path "C:\Program Files\Notepad++\notepad++.exe"
+
+if (!(Test-Path -Path "C:\temp\")) {
+	New-Item -ItemType directory -Path "C:\temp\"
+}
+
 if (-not $NPPINSTALLED) {
 	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 	$NPPBASEURI = "https://notepad-plus-plus.org"

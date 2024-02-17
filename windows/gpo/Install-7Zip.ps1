@@ -1,4 +1,9 @@
 $7ZIPINSTALLED = Test-Path 'C:\Program Files\7-Zip\7z.exe'
+
+if (!(Test-Path -Path "C:\temp\")) {
+	New-Item -ItemType directory -Path "C:\temp\"
+}
+
 if (-not $7ZIPINSTALLED) {
 	$7ZIPDLURL = 'https://7-zip.org/' + (Invoke-WebRequest -UseBasicParsing -Uri 'https://7-zip.org/' |
 	Select-Object -ExpandProperty Links |

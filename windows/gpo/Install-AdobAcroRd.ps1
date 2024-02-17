@@ -1,5 +1,10 @@
 $ADOBE32INSTALLED = Test-Path "C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"
 $ADOBE64INSTALLED = Test-Path "C:\Program Files\Adobe\Acrobat Reader DC\Reader\AcroRd64.exe"
+
+if (!(Test-Path -Path "C:\temp\")) {
+	New-Item -ItemType directory -Path "C:\temp\"
+}
+
 if (-not ($ADOBE32INSTALLED -or $ADOBE64INSTALLED)) {
 	$ADOBEVERSION = "2300820470"
 	$ADOBEDLURL = "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/$ADOBEVERSION/AcroRdrDC${ADOBEVERSION}_de_DE.exe"

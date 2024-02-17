@@ -1,4 +1,9 @@
 $FFINSTALLED = Test-Path "C:\Program Files\Mozilla Firefox\firefox.exe"
+
+if (!(Test-Path -Path "C:\temp\")) {
+	New-Item -ItemType directory -Path "C:\temp\"
+}
+
 if (-not $FFINSTALLED) {
 	$DOWNLOAD_URL = "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=de"
 	$URL = "https://product-details.mozilla.org/1.0/firefox_versions.json"
